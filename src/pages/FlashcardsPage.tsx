@@ -66,7 +66,7 @@ const FlashcardsPage = () => {
                 style={{ backfaceVisibility: "hidden" }}
               >
                 <img
-                  src={current.image}
+                  src={current.altImage}
                   alt="Identify this cloud"
                   className="w-full h-full object-cover"
                 />
