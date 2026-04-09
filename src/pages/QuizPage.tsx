@@ -20,7 +20,7 @@ function generateQuiz(count: number = 10): Question[] {
     const options = [...wrong.map((w) => ({ id: w.id, name: w.name })), { id: cloud.id, name: cloud.name }]
       .sort(() => Math.random() - 0.5);
     return {
-      image: cloud.image,
+      image: cloud.altImage,
       correctId: cloud.id,
       correctName: cloud.name,
       options,
