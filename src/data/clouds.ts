@@ -23,6 +23,7 @@ import cumulonimbusAlt from "@/assets/clouds/cumulonimbus_alt.jpg";
 export interface CloudType {
   id: string;
   name: string;
+  rootWord: string;
   category: "high" | "middle" | "low" | "vertical";
   altitude: string;
   image: string;
