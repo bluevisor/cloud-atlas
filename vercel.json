@@ -1,3 +1,3 @@
 {
-  "installCommand": "pnpm config set trust-policy audited && pnpm install"
+  "installCommand": "pnpm install --config.trust-policy=audited"
 }
