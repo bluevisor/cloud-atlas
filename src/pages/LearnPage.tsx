@@ -61,7 +61,7 @@ const LearnPage = () => {
                         {cloud.altitude}
                       </p>
                       <h3 className="text-display text-[clamp(2rem,3vw,3.5rem)] leading-[1] mb-2">
-                        {cloud.name}
+                        {cloud.name} <span className="text-muted-foreground font-normal text-[0.5em]">{cloud.chineseName}</span>
                       </h3>
                       <p className="text-sm italic text-muted-foreground mb-6">
                         {cloud.rootWord}
