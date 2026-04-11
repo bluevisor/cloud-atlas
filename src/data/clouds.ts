@@ -33,6 +33,7 @@ export interface CloudType {
   description: string;
   characteristics: string[];
   aviationSignificance: string;
+  featured?: boolean;
 }
 
 export const clouds: CloudType[] = [
@@ -48,7 +49,8 @@ export const clouds: CloudType[] = [
     shortDescription: "Thin, wispy strands of ice crystals at high altitude.",
     description: "Cirrus clouds are delicate, feathery clouds composed entirely of ice crystals. They form at altitudes above 20,000 feet and are among the highest clouds in the troposphere. Their wispy, hair-like appearance is created by wind shear at high altitudes, which stretches and curves the ice crystal trails.",
     characteristics: ["Thin, wispy filaments", "Made of ice crystals", "Often indicate fair weather", "Can signal approaching warm front"],
-    aviationSignificance: "Generally pose no hazard to flight but can indicate approaching weather systems. Jet contrails often form at similar altitudes."
+    aviationSignificance: "Generally pose no hazard to flight but can indicate approaching weather systems. Jet contrails often form at similar altitudes.",
+    featured: true,
   },
   {
     id: "cirrocumulus",
@@ -118,7 +120,8 @@ export const clouds: CloudType[] = [
     shortDescription: "Low, lumpy gray cloud layer with patches of blue sky visible between.",
     description: "Stratocumulus clouds are low, lumpy masses of cloud that form in patches, sheets, or layers. They are the most common cloud type worldwide, covering about 20% of Earth's surface at any given time. They appear as large, dark, rounded masses with breaks of blue sky visible between.",
     characteristics: ["Low lumpy gray masses", "Most common cloud type", "Patches with gaps", "Usually no precipitation"],
-    aviationSignificance: "Can cause low ceilings affecting VFR flight. Generally light turbulence within but can reduce visibility near airports."
+    aviationSignificance: "Can cause low ceilings affecting VFR flight. Generally light turbulence within but can reduce visibility near airports.",
+    featured: true,
   },
   {
     id: "stratus",
@@ -174,8 +177,9 @@ export const clouds: CloudType[] = [
     shortDescription: "Massive towering cloud with anvil top, producing thunderstorms.",
     description: "Cumulonimbus clouds are the king of clouds — massive, towering formations that can extend from near the surface to above 40,000 feet. Their distinctive anvil-shaped top forms when the rising air reaches the tropopause. These clouds produce thunderstorms, heavy rain, lightning, hail, and occasionally tornadoes.",
     characteristics: ["Massive vertical extent", "Anvil-shaped top", "Produces thunderstorms", "Can generate tornadoes and hail"],
-    aviationSignificance: "The most dangerous cloud type for aviation. Severe turbulence, icing, hail, lightning, windshear, and microbursts. All aircraft should avoid cumulonimbus clouds by at least 20 nautical miles."
-  }
+    aviationSignificance: "The most dangerous cloud type for aviation. Severe turbulence, icing, hail, lightning, windshear, and microbursts. All aircraft should avoid cumulonimbus clouds by at least 20 nautical miles.",
+    featured: true,
+  },
 ];
 
 export const categoryLabels: Record<string, string> = {
@@ -185,9 +189,3 @@ export const categoryLabels: Record<string, string> = {
   vertical: "Clouds with Vertical Development"
 };
 
-export const categoryColors: Record<string, string> = {
-  high: "hsl(var(--primary))",
-  middle: "hsl(210 60% 50%)",
-  low: "hsl(160 50% 40%)",
-  vertical: "hsl(280 50% 50%)"
-};

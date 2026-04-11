@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
 const navItems = [
@@ -12,6 +12,8 @@ const navItems = [
 const SiteHeader = () => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
+
+  useEffect(() => { setOpen(false); }, [location.pathname]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">

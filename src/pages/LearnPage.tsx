@@ -40,9 +40,7 @@ const LearnPage = () => {
                   <article
                     key={cloud.id}
                     id={cloud.id}
-                    className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-start ${
-                      i % 2 === 1 ? "lg:direction-rtl" : ""
-                    }`}
+                    className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start"
                   >
                     <div className={`${i % 2 === 1 ? "lg:order-2" : ""}`}>
                       <div className="aspect-[4/3] overflow-hidden">

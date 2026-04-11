@@ -4,7 +4,7 @@ import SiteHeader from "@/components/SiteHeader";
 import { ArrowRight } from "lucide-react";
 
 const Index = () => {
-  const featured = clouds.slice(0, 3);
+  const featured = clouds.filter((c) => c.featured);
 
   return (
     <div className="min-h-screen bg-background">

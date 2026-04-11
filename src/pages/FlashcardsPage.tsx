@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { clouds } from "@/data/clouds";
 import SiteHeader from "@/components/SiteHeader";
 import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
@@ -20,6 +20,16 @@ const FlashcardsPage = () => {
     setCurrentIndex((i) => (i - 1 + shuffled.length) % shuffled.length);
   };
 
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") prev();
+      else if (e.key === "ArrowRight") next();
+      else if (e.key === " ") { e.preventDefault(); setFlipped((f) => !f); }
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, []);
+
   const shuffle = () => {
     const s = [...clouds].sort(() => Math.random() - 0.5);
     setShuffled(s);
@@ -28,33 +38,31 @@ const FlashcardsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="h-screen flex flex-col bg-background overflow-hidden">
       <SiteHeader />
 
-      <section className="pt-32 pb-8 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-muted-foreground text-sm tracking-[0.2em] uppercase mb-6">
+      <div className="flex flex-col flex-1 min-h-0 px-6 pt-20 pb-6">
+        <div className="max-w-3xl mx-auto text-center mb-4">
+          <p className="text-muted-foreground text-sm tracking-[0.2em] uppercase mb-2">
             Flashcards
           </p>
-          <h1 className="text-display text-[clamp(2rem,4vw,4rem)] leading-[0.9] mb-4">
+          <h1 className="text-display text-[clamp(1.5rem,3vw,3rem)] leading-[0.9] mb-2">
             Test Your <span className="text-primary">Memory</span>
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Click the card to flip. Image on front, name & description on back.
           </p>
         </div>
-      </section>
 
-      <section className="px-6 pb-16">
-        <div className="max-w-2xl mx-auto">
+        <div className="flex flex-col flex-1 min-h-0 max-w-2xl mx-auto w-full">
           {/* Card */}
           <div
-            className="relative aspect-[4/3] cursor-pointer mb-8"
+            className="relative flex-1 min-h-0 cursor-pointer mb-4"
             style={{ perspective: "1000px" }}
             onClick={() => setFlipped(!flipped)}
           >
             <div
-              className="w-full h-full transition-transform duration-700 relative"
+              className="absolute inset-0 transition-transform duration-700"
               style={{
                 transformStyle: "preserve-3d",
                 transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
@@ -88,9 +96,11 @@ const FlashcardsPage = () => {
                 <p className="text-primary text-xs tracking-[0.2em] uppercase mb-4">
                   {current.altitude}
                 </p>
-                <h2 className="text-display text-[clamp(2rem,4vw,4rem)] leading-[1] mb-6">
+                <h2 className="text-display text-[clamp(2rem,4vw,4rem)] leading-[1] mb-1">
                   {current.name}
                 </h2>
+                <p className="text-muted-foreground text-xl mb-1">{current.chineseName}</p>
+                <p className="text-muted-foreground text-xs italic mb-6">{current.rootWord}</p>
                 <p className="text-muted-foreground leading-relaxed max-w-md">
                   {current.shortDescription}
                 </p>
@@ -99,7 +109,7 @@ const FlashcardsPage = () => {
           </div>
 
           {/* Controls */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-shrink-0">
             <button
               onClick={prev}
               className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -127,7 +137,7 @@ const FlashcardsPage = () => {
             </button>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

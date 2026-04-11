@@ -1,7 +1,10 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { clouds } from "@/data/clouds";
 import SiteHeader from "@/components/SiteHeader";
-import { CheckCircle, XCircle, RotateCcw } from "lucide-react";
+import { CheckCircle, XCircle, RotateCcw, ArrowRight } from "lucide-react";
+
+const SCORE_EXCELLENT = 8;
+const SCORE_GOOD = 5;
 
 interface Question {
   image: string;
@@ -17,8 +20,10 @@ function generateQuiz(count: number = 10): Question[] {
       .filter((c) => c.id !== cloud.id)
       .sort(() => Math.random() - 0.5)
       .slice(0, 3);
-    const options = [...wrong.map((w) => ({ id: w.id, name: w.name })), { id: cloud.id, name: cloud.name }]
-      .sort(() => Math.random() - 0.5);
+    const options = [
+      ...wrong.map((w) => ({ id: w.id, name: w.name })),
+      { id: cloud.id, name: cloud.name },
+    ].sort(() => Math.random() - 0.5);
     return {
       image: cloud.altImage,
       correctId: cloud.id,
@@ -32,34 +37,47 @@ const QuizPage = () => {
   const [quiz, setQuiz] = useState(() => generateQuiz());
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
-  const [answers, setAnswers] = useState<(boolean | null)[]>(
-    Array(10).fill(null)
-  );
+  const [answers, setAnswers] = useState<(boolean | null)[]>(Array(10).fill(null));
   const [finished, setFinished] = useState(false);
 
   const question = quiz[currentQ];
-  const score = useMemo(
-    () => answers.filter((a) => a === true).length,
-    [answers]
+  const score = useMemo(() => answers.filter((a) => a === true).length, [answers]);
+
+  const handleSelect = useCallback(
+    (id: string) => {
+      if (selected) return;
+      setSelected(id);
+      const correct = id === question.correctId;
+      setAnswers((prev) => {
+        const next = [...prev];
+        next[currentQ] = correct;
+        return next;
+      });
+    },
+    [selected, question.correctId, currentQ]
   );
 
-  const handleSelect = (id: string) => {
-    if (selected) return;
-    setSelected(id);
-    const correct = id === question.correctId;
-    const newAnswers = [...answers];
-    newAnswers[currentQ] = correct;
-    setAnswers(newAnswers);
-  };
-
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (currentQ < quiz.length - 1) {
-      setCurrentQ(currentQ + 1);
+      setCurrentQ((q) => q + 1);
       setSelected(null);
     } else {
       setFinished(true);
     }
-  };
+  }, [currentQ, quiz.length]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const idx = ["1", "2", "3", "4"].indexOf(e.key);
+      if (idx !== -1 && idx < question.options.length) {
+        handleSelect(question.options[idx].id);
+      } else if ((e.key === "Enter" || e.key === "ArrowRight") && selected) {
+        handleNext();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [handleSelect, handleNext, question.options, selected]);
 
   const restart = () => {
     setQuiz(generateQuiz());
@@ -70,41 +88,40 @@ const QuizPage = () => {
   };
 
   if (finished) {
+    const label =
+      score >= SCORE_EXCELLENT
+        ? "Excellent!"
+        : score >= SCORE_GOOD
+        ? "Good Effort"
+        : "Keep Studying";
+
     return (
       <div className="min-h-screen bg-background">
         <SiteHeader />
         <section className="pt-32 px-6">
           <div className="max-w-2xl mx-auto text-center">
             <h1 className="text-display text-[clamp(2.5rem,5vw,5rem)] leading-[0.9] mb-8">
-              {score >= 8 ? (
-                <>
-                  <span className="text-primary">Excellent!</span>
-                </>
-              ) : score >= 5 ? (
-                "Good Effort"
+              {score >= SCORE_EXCELLENT ? (
+                <span className="text-primary">{label}</span>
               ) : (
-                "Keep Studying"
+                label
               )}
             </h1>
             <p className="text-[clamp(3rem,6vw,6rem)] text-display leading-[1] mb-4">
               {score}
-              <span className="text-muted-foreground text-[0.4em]">
-                /{quiz.length}
-              </span>
+              <span className="text-muted-foreground text-[0.4em]">/{quiz.length}</span>
             </p>
             <p className="text-muted-foreground mb-12">
               You correctly identified {score} out of {quiz.length} cloud types.
             </p>
 
-            {/* Review */}
+            {/* Review grid */}
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-12">
               {quiz.map((q, i) => (
                 <div
                   key={i}
                   className={`aspect-square overflow-hidden relative border-2 ${
-                    answers[i]
-                      ? "border-green-500"
-                      : "border-red-500"
+                    answers[i] ? "border-green-500" : "border-red-500"
                   }`}
                 >
                   <img
@@ -139,13 +156,13 @@ const QuizPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="h-screen flex flex-col bg-background overflow-hidden">
       <SiteHeader />
 
-      <section className="pt-32 pb-8 px-6">
-        <div className="max-w-3xl mx-auto">
-          {/* Progress */}
-          <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col flex-1 min-h-0 pt-20 pb-6 px-6">
+        {/* Progress */}
+        <div className="max-w-3xl mx-auto w-full mb-4 flex-shrink-0">
+          <div className="flex items-center justify-between mb-3">
             <p className="text-muted-foreground text-sm tracking-[0.2em] uppercase">
               Question {currentQ + 1} of {quiz.length}
             </p>
@@ -153,7 +170,7 @@ const QuizPage = () => {
               Score: <span className="text-primary">{score}</span>
             </p>
           </div>
-          <div className="h-px bg-border mb-2">
+          <div className="h-px bg-border">
             <div
               className="h-full bg-primary transition-all duration-500"
               style={{
@@ -162,24 +179,22 @@ const QuizPage = () => {
             />
           </div>
         </div>
-      </section>
 
-      <section className="px-6 pb-16">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-display text-2xl mb-8">
-            Identify this cloud type
-          </h2>
+        <div className="flex flex-col flex-1 min-h-0 max-w-3xl mx-auto w-full">
+          <h2 className="text-display text-xl mb-3 flex-shrink-0">Identify this cloud type</h2>
 
-          <div className="aspect-video overflow-hidden mb-10">
+          {/* Image fills available space */}
+          <div className="relative flex-1 min-h-0 overflow-hidden mb-4">
             <img
               src={question.image}
               alt="Identify this cloud"
-              className="w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover"
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
-            {question.options.map((opt) => {
+          {/* Answer buttons */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 flex-shrink-0">
+            {question.options.map((opt, idx) => {
               let state = "";
               if (selected) {
                 if (opt.id === question.correctId) state = "correct";
@@ -191,7 +206,7 @@ const QuizPage = () => {
                   key={opt.id}
                   onClick={() => handleSelect(opt.id)}
                   disabled={!!selected}
-                  className={`p-5 text-left border transition-all duration-300 ${
+                  className={`p-3 text-left border transition-all duration-300 flex items-center gap-3 ${
                     state === "correct"
                       ? "border-green-500 bg-green-500/10"
                       : state === "wrong"
@@ -201,24 +216,38 @@ const QuizPage = () => {
                       : "border-border hover:border-primary"
                   }`}
                 >
-                  <span className="text-display text-lg">{opt.name}</span>
+                  <span className="text-xs text-muted-foreground border border-border w-5 h-5 flex items-center justify-center flex-shrink-0">
+                    {idx + 1}
+                  </span>
+                  <span className="text-display text-base flex-1">{opt.name}</span>
+                  {state === "correct" && (
+                    <CheckCircle size={16} className="text-green-500 flex-shrink-0" />
+                  )}
+                  {state === "wrong" && (
+                    <XCircle size={16} className="text-red-500 flex-shrink-0" />
+                  )}
                 </button>
               );
             })}
           </div>
 
-          {selected && (
-            <div className="text-center">
-              <button
-                onClick={handleNext}
-                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 text-sm tracking-[0.12em] uppercase transition-opacity hover:opacity-90"
-              >
-                {currentQ < quiz.length - 1 ? "Next Question" : "See Results"}
-              </button>
-            </div>
-          )}
+          <div className="text-center mt-3 flex-shrink-0">
+            <button
+              onClick={handleNext}
+              disabled={!selected}
+              className={`inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 text-sm tracking-[0.12em] uppercase transition-opacity ${
+                selected ? "opacity-100 hover:opacity-90" : "opacity-0 pointer-events-none"
+              }`}
+            >
+              {currentQ < quiz.length - 1 ? (
+                <>Next Question <ArrowRight size={14} /></>
+              ) : (
+                "See Results"
+              )}
+            </button>
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };
