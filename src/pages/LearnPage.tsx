@@ -60,9 +60,12 @@ const LearnPage = () => {
                       <p className="text-primary text-xs tracking-[0.2em] uppercase mb-3">
                         {cloud.altitude}
                       </p>
-                      <h3 className="text-display text-[clamp(2rem,3vw,3.5rem)] leading-[1] mb-6">
+                      <h3 className="text-display text-[clamp(2rem,3vw,3.5rem)] leading-[1] mb-2">
                         {cloud.name}
                       </h3>
+                      <p className="text-sm italic text-muted-foreground mb-6">
+                        {cloud.rootWord}
+                      </p>
                       <p className="text-muted-foreground leading-relaxed mb-8">
                         {cloud.description}
                       </p>

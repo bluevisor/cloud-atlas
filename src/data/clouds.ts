@@ -23,6 +23,7 @@ import cumulonimbusAlt from "@/assets/clouds/cumulonimbus_alt.jpg";
 export interface CloudType {
   id: string;
   name: string;
+  rootWord: string;
   category: "high" | "middle" | "low" | "vertical";
   altitude: string;
   image: string;
@@ -37,6 +38,7 @@ export const clouds: CloudType[] = [
   {
     id: "cirrus",
     name: "Cirrus",
+    rootWord: "Latin cirrus — \"curl, tendril of hair\"",
     category: "high",
     altitude: "Above 20,000 ft AGL",
     image: cirrus,
@@ -49,6 +51,7 @@ export const clouds: CloudType[] = [
   {
     id: "cirrocumulus",
     name: "Cirrocumulus",
+    rootWord: "Latin cirrus (\"curl\") + cumulus (\"heap\")",
     category: "high",
     altitude: "Above 20,000 ft AGL",
     image: cirrocumulus,
@@ -61,6 +64,7 @@ export const clouds: CloudType[] = [
   {
     id: "cirrostratus",
     name: "Cirrostratus",
+    rootWord: "Latin cirrus (\"curl\") + stratus (\"spread out\")",
     category: "high",
     altitude: "Above 20,000 ft AGL",
     image: cirrostratus,
@@ -73,6 +77,7 @@ export const clouds: CloudType[] = [
   {
     id: "altocumulus",
     name: "Altocumulus",
+    rootWord: "Latin altus (\"high\") + cumulus (\"heap\")",
     category: "middle",
     altitude: "6,500 – 20,000 ft AGL",
     image: altocumulus,
@@ -85,6 +90,7 @@ export const clouds: CloudType[] = [
   {
     id: "altostratus",
     name: "Altostratus",
+    rootWord: "Latin altus (\"high\") + stratus (\"spread out\")",
     category: "middle",
     altitude: "6,500 – 20,000 ft AGL",
     image: altostratus,
@@ -97,6 +103,7 @@ export const clouds: CloudType[] = [
   {
     id: "stratocumulus",
     name: "Stratocumulus",
+    rootWord: "Latin stratus (\"spread out\") + cumulus (\"heap\")",
     category: "low",
     altitude: "Below 6,500 ft AGL",
     image: stratocumulus,
@@ -109,6 +116,7 @@ export const clouds: CloudType[] = [
   {
     id: "stratus",
     name: "Stratus",
+    rootWord: "Latin stratus — \"spread out, layered\"",
     category: "low",
     altitude: "Below 6,500 ft AGL",
     image: stratus,
@@ -121,6 +129,7 @@ export const clouds: CloudType[] = [
   {
     id: "nimbostratus",
     name: "Nimbostratus",
+    rootWord: "Latin nimbus (\"rain cloud\") + stratus (\"spread out\")",
     category: "low",
     altitude: "Below 6,500 ft AGL",
     image: nimbostratus,
@@ -133,6 +142,7 @@ export const clouds: CloudType[] = [
   {
     id: "cumulus",
     name: "Cumulus",
+    rootWord: "Latin cumulus — \"heap, pile\"",
     category: "vertical",
     altitude: "Base below 6,500 ft, tops variable",
     image: cumulus,
@@ -145,6 +155,7 @@ export const clouds: CloudType[] = [
   {
     id: "cumulonimbus",
     name: "Cumulonimbus",
+    rootWord: "Latin cumulus (\"heap\") + nimbus (\"rain cloud\")",
     category: "vertical",
     altitude: "Base near surface, tops above 40,000 ft",
     image: cumulonimbus,
