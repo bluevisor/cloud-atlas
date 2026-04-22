@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { clouds } from "@/data/clouds";
+import { clouds, getRandomPracticeImage } from "@/data/clouds";
 
 // Inline generateQuiz so we can test it directly without importing the component
 function generateQuiz(count: number = 10) {
@@ -13,7 +13,12 @@ function generateQuiz(count: number = 10) {
       ...wrong.map((w) => ({ id: w.id, name: w.name })),
       { id: cloud.id, name: cloud.name },
     ].sort(() => Math.random() - 0.5);
-    return { image: cloud.altImage, correctId: cloud.id, correctName: cloud.name, options };
+    return {
+      image: getRandomPracticeImage(cloud),
+      correctId: cloud.id,
+      correctName: cloud.name,
+      options,
+    };
   });
 }
 
@@ -74,6 +79,7 @@ describe("clouds data", () => {
       expect(c.name).toBeTruthy();
       expect(c.category).toMatch(/^(high|middle|low|vertical)$/);
       expect(c.characteristics.length).toBeGreaterThan(0);
+      expect(c.practiceImages).toHaveLength(4);
     });
   });
 

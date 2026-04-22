@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
-import { clouds } from "@/data/clouds";
+import { clouds, getRandomPracticeImage } from "@/data/clouds";
 import SiteHeader from "@/components/SiteHeader";
 import { CheckCircle, XCircle, RotateCcw, ArrowRight } from "lucide-react";
 
@@ -25,7 +25,7 @@ function generateQuiz(count: number = 10): Question[] {
       { id: cloud.id, name: cloud.name },
     ].sort(() => Math.random() - 0.5);
     return {
-      image: cloud.altImage,
+      image: getRandomPracticeImage(cloud),
       correctId: cloud.id,
       correctName: cloud.name,
       options,

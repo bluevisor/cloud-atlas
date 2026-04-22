@@ -57,6 +57,12 @@
     @apply border-border;
   }
 
+  html {
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 4rem;
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
@@ -64,6 +70,13 @@
 
   h1, h2, h3, h4 {
     font-family: var(--font-display);
+  }
+
+  .snap-page {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    min-height: 100vh;
+    min-height: 100svh;
   }
 }
 

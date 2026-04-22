@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { clouds } from "@/data/clouds";
 import SiteHeader from "@/components/SiteHeader";
+import SnapProgress from "@/components/SnapProgress";
 import { ArrowRight } from "lucide-react";
 
 const Index = () => {
@@ -9,9 +10,10 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
+      <SnapProgress />
 
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center px-6">
+      <section className="snap-page relative flex items-center px-6">
         <div className="max-w-7xl mx-auto w-full pt-16">
           <p className="text-muted-foreground text-sm tracking-[0.2em] uppercase mb-6">
             Aviation Weather Education
@@ -44,8 +46,8 @@ const Index = () => {
       </section>
 
       {/* Featured clouds */}
-      <section className="section-cream py-32 px-6">
-        <div className="max-w-7xl mx-auto">
+      <section className="snap-page section-cream flex items-center px-6 py-24">
+        <div className="max-w-7xl mx-auto w-full">
           <p className="text-sm tracking-[0.2em] uppercase mb-4 opacity-50">
             Featured
           </p>
@@ -89,10 +91,10 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Modes */}
-      <section className="py-32 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border">
+      {/* Modes + Footer */}
+      <section className="snap-page flex flex-col justify-center px-6 py-24">
+        <div className="max-w-7xl mx-auto w-full flex-1 flex items-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border w-full">
             {[
               {
                 title: "Learn",
@@ -128,19 +130,17 @@ const Index = () => {
             ))}
           </div>
         </div>
+        <footer className="border-t border-border pt-8 mt-12">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-display text-lg">
+              Cloud<span className="text-primary">Atlas</span>
+            </p>
+            <p className="text-muted-foreground text-xs tracking-[0.1em]">
+              Aviation cloud education — learn, practice, master.
+            </p>
+          </div>
+        </footer>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-border py-12 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-display text-lg">
-            Cloud<span className="text-primary">Atlas</span>
-          </p>
-          <p className="text-muted-foreground text-xs tracking-[0.1em]">
-            Aviation cloud education — learn, practice, master.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 };

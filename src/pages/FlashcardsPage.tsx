@@ -1,12 +1,26 @@
 import { useState, useEffect } from "react";
-import { clouds } from "@/data/clouds";
+import { clouds, type CloudType, getRandomPracticeImage } from "@/data/clouds";
 import SiteHeader from "@/components/SiteHeader";
 import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
+
+interface Flashcard {
+  cloud: CloudType;
+  promptImage: string;
+}
+
+function buildFlashcards(): Flashcard[] {
+  return [...clouds]
+    .map((cloud) => ({
+      cloud,
+      promptImage: getRandomPracticeImage(cloud),
+    }))
+    .sort(() => Math.random() - 0.5);
+}
 
 const FlashcardsPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
-  const [shuffled, setShuffled] = useState(clouds);
+  const [shuffled, setShuffled] = useState(() => buildFlashcards());
 
   const current = shuffled[currentIndex];
 
@@ -31,8 +45,7 @@ const FlashcardsPage = () => {
   }, []);
 
   const shuffle = () => {
-    const s = [...clouds].sort(() => Math.random() - 0.5);
-    setShuffled(s);
+    setShuffled(buildFlashcards());
     setCurrentIndex(0);
     setFlipped(false);
   };
@@ -74,7 +87,7 @@ const FlashcardsPage = () => {
                 style={{ backfaceVisibility: "hidden" }}
               >
                 <img
-                  src={current.altImage}
+                  src={current.promptImage}
                   alt="Identify this cloud"
                   className="w-full h-full object-cover"
                 />
@@ -94,15 +107,19 @@ const FlashcardsPage = () => {
                 }}
               >
                 <p className="text-primary text-xs tracking-[0.2em] uppercase mb-4">
-                  {current.altitude}
+                  {current.cloud.altitude}
                 </p>
                 <h2 className="text-display text-[clamp(2rem,4vw,4rem)] leading-[1] mb-1">
-                  {current.name}
+                  {current.cloud.name}
                 </h2>
-                <p className="text-muted-foreground text-xl mb-1">{current.chineseName}</p>
-                <p className="text-muted-foreground text-xs italic mb-6">{current.rootWord}</p>
+                <p className="text-muted-foreground text-xl mb-1">
+                  {current.cloud.chineseName}
+                </p>
+                <p className="text-muted-foreground text-xs italic mb-6">
+                  {current.cloud.rootWord}
+                </p>
                 <p className="text-muted-foreground leading-relaxed max-w-md">
-                  {current.shortDescription}
+                  {current.cloud.shortDescription}
                 </p>
               </div>
             </div>
