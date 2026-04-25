@@ -7,6 +7,7 @@ const navItems = [
   { to: "/learn", label: "Learn" },
   { to: "/flashcards", label: "Flashcards" },
   { to: "/quiz", label: "Quiz" },
+  { to: "/guess", label: "Guess" },
 ];
 
 const SiteHeader = () => {

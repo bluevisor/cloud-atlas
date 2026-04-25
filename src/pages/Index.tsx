@@ -41,6 +41,12 @@ const Index = () => {
             >
               Take the Quiz
             </Link>
+            <Link
+              to="/guess"
+              className="inline-flex items-center gap-2 border border-border text-foreground px-8 py-4 text-sm tracking-[0.12em] uppercase transition-all duration-300 hover:border-primary hover:text-primary"
+            >
+              Guess This Cloud ☁️
+            </Link>
           </div>
         </div>
       </section>
@@ -110,6 +116,11 @@ const Index = () => {
                 title: "Quiz",
                 desc: "Test your knowledge with image-based identification quizzes and scored assessments.",
                 link: "/quiz",
+              },
+              {
+                title: "Guess",
+                desc: "Single-cloud challenge designed for sharing — try it, then send the link to friends and compare results.",
+                link: "/guess",
               },
             ].map((mode) => (
               <Link
